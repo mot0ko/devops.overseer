@@ -1,1 +1,6 @@
 pre-commit
+setuptools>=68
+wheel
+build
+twine
+setuptools-scm
