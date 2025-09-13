@@ -13,3 +13,21 @@ From the root of the repository, if you don't have another preference onto where
 `python3 -v venv venv`
 
 > INFO; The `venv` directory is ignored at the root.
+
+# Contributing
+
+## Commiting
+
+This repository tries to follow as best as it cana the [conventional commits specification](https://www.conventionalcommits.org).
+The accepted types for commit messages are:
+- feat
+- fix
+- docs
+- style
+- refactor
+- perf
+- test
+- build
+- ci
+- chore
+- revert
