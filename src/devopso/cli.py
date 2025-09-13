@@ -1,2 +1,6 @@
+def get_hello_string() -> str:
+    return "hello"
+
+
 def main():
-    print("hello")
+    print(get_hello_string())

@@ -4,3 +4,5 @@ wheel
 build
 twine
 setuptools-scm
+pytest
+tox
