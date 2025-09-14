@@ -43,3 +43,6 @@ local_scheme = "node-and-date"
   "resources/**/*.json",
   "resources/**/*.banner",
 ]
+
+[tool.black]
+line-length = 160

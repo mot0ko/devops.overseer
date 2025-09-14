@@ -44,9 +44,7 @@ class Configuration:
             with file_path.open("r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
             if not isinstance(data, dict):
-                raise ValueError(
-                    f"YAML root must be a mapping (dict), got {type(data).__name__}"
-                )
+                raise ValueError(f"YAML root must be a mapping (dict), got {type(data).__name__}")
         return data
 
     @staticmethod
@@ -99,9 +97,7 @@ class Configuration:
     @staticmethod
     def expand_strs(obj):
         if isinstance(obj, str):
-            return os.path.expandvars(
-                os.path.expanduser(obj)
-            )  # replaces ${VAR} with env values
+            return os.path.expandvars(os.path.expanduser(obj))  # replaces ${VAR} with env values
         if isinstance(obj, dict):
             return {k: Configuration.expand_strs(v) for k, v in obj.items()}
         if isinstance(obj, list):

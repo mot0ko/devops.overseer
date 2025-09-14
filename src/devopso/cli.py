@@ -21,7 +21,5 @@ def print_banner() -> None:
 
 def main():
     print_banner()
-    logging.config.dictConfig(
-        Configuration.read_configuration(_LOGGING_CONFIGURATION, expand_strs=True)
-    )
+    logging.config.dictConfig(Configuration.read_configuration(_LOGGING_CONFIGURATION, expand_strs=True))
     logging.getLogger(_APP_LOGGER_NAME).info(get_hello_string())
