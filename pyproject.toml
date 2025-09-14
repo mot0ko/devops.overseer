@@ -33,3 +33,12 @@ where = ["src"]  # remove this section if you DON'T use a src layout
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "node-and-date"
+
+# Include resource files in the wheel
+[tool.setuptools.package-data]
+"devopso" = [
+  "resources/**/*.yaml",
+  "resources/**/*.yml",
+  "resources/**/*.toml",
+  "resources/**/*.json",
+]
