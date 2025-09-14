@@ -1,5 +1,5 @@
 def get_hello_string() -> str:
-    return "hello"
+    return "The overseer is in the room"
 
 
 def main():
