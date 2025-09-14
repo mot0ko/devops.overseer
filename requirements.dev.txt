@@ -6,3 +6,5 @@ twine
 setuptools-scm
 pytest
 tox
+isort
+black
