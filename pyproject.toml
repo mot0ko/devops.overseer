@@ -41,4 +41,5 @@ local_scheme = "node-and-date"
   "resources/**/*.yml",
   "resources/**/*.toml",
   "resources/**/*.json",
+  "resources/**/*.banner",
 ]
