@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import logging
 import os
 from importlib.resources import files
 from pathlib import Path
 from typing import Any, Dict, Union
 
 import yaml
+
+_log = logging.getLogger("configuration")
 
 
 class Configuration:
@@ -35,7 +38,7 @@ class Configuration:
             yaml.YAMLError: If the YAML file cannot be parsed.
         """
         file_path = Path(os.path.expanduser(path))
-        print(f"reading yaml file: {file_path}")
+        _log.debug(f"reading yaml file: {file_path}")
         data = {}
         if not file_path.is_file():
             file_path = files("devopso").joinpath(path)
@@ -45,6 +48,8 @@ class Configuration:
                 data = yaml.safe_load(f)
             if not isinstance(data, dict):
                 raise ValueError(f"YAML root must be a mapping (dict), got {type(data).__name__}")
+        else:
+            _log.debug(f"no file to read: {file_path}")
         return data
 
     @staticmethod
@@ -67,7 +72,7 @@ class Configuration:
         Raises:
             ValueError: If the YAML file is not a mapping (dict) at the root.
         """
-        print(f"reading configuration file: {path}")
+        _log.debug(f"reading configuration file: {path}")
         conf = {}
         if not path:
             raise ValueError("The path provided is empty")
@@ -76,7 +81,7 @@ class Configuration:
         if p.suffix.lower() in {".yml", ".yaml"}:
             conf = Configuration.read_yaml(p)
         else:
-            print(f"missing file: {p}")
+            _log.debug(f"missing file: {p}")
 
         if "include" in conf and read_includes:
             if isinstance(conf["include"], list):
@@ -85,9 +90,9 @@ class Configuration:
             elif isinstance(conf["include"], str):
                 conf = conf | Configuration.read_configuration(conf["include"])
             else:
-                print("No type")
+                _log.debug("No type")
         else:
-            print("no include")
+            _log.debug("no include")
 
         if expand_strs:
             conf = Configuration.expand_strs(conf)
