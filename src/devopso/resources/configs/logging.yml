@@ -17,7 +17,7 @@ handlers:
     class: logging.handlers.RotatingFileHandler
     level: DEBUG
     formatter: standard
-    filename: ~/.config/devopso/app.log
+    filename: ~/.config/devops-overseer/app.log
     maxBytes: 5000000
     backupCount: 5
     encoding: utf8
@@ -28,6 +28,10 @@ loggers:
     level: DEBUG
     propagate: false
   configuration:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
+  boot:
     handlers: [console, file]
     level: DEBUG
     propagate: false
