@@ -31,6 +31,10 @@ loggers:
     handlers: [console, file]
     level: DEBUG
     propagate: false
+  confluence-cloud:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
   boot:
     handlers: [console, file]
     level: DEBUG
