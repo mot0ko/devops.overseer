@@ -11,6 +11,23 @@ import yaml
 _log = logging.getLogger("configuration")
 
 
+class Configured:
+    def __init__(self, path: str = "") -> None:
+        self._conf: Dict[str, Any] = {}
+        self._conf_path = path
+        if not self.read_configuration():
+            self._conf_path = files("devopso").joinpath(path)
+            self.read_configuration()
+
+    def read_configuration(self) -> bool:
+        if self._conf_path:
+            p = Path(self._conf_path)
+            if p.is_file() and p.suffix.lower() in {".yml", ".yaml"}:
+                self._conf = Configuration.read_configuration(p, read_includes=True)
+                return True
+        return False
+
+
 class Configuration:
     """
     Utility class for reading and parsing YAML configuration files.
@@ -86,7 +103,7 @@ class Configuration:
         if "include" in conf and read_includes:
             if isinstance(conf["include"], list):
                 for included_conf in conf["include"]:
-                    conf = conf | Configuration.read_configuration(included_conf)
+                    conf = conf | Configuration.read_configuration(Configuration.expand_strs(included_conf))
             elif isinstance(conf["include"], str):
                 conf = conf | Configuration.read_configuration(conf["include"])
             else:
