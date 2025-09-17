@@ -1,0 +1,54 @@
+# Set strict to true to turn warnings into errors to catch warnings within CI.
+strict: false
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+theme:
+  name: material
+  # By default, fonts are pulled from Google on the Internet. To support offline usage, this is
+  # disabled.
+  font: false
+  palette:
+    scheme: slate
+    primary: green
+    accent: yellow
+  icon:
+    logo: material/math-integral-box
+    # GitHub specific.
+    repo: fontawesome/brands/github
+  favicon: static/math-integral-box.png
+  features:
+    - content.code.annotate
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+markdown_extensions:
+  - admonition
+  - pymdownx.keys
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/mot0ko/devops.overseer
+# This is needed to allow links to work when opened from the file system.
+use_directory_urls: false
+plugins:
+  - search
+watch:
+- src
+  # This plugin is used to validate URLs (including some anchors).
+  # Uncomment to build the docs with this validation enabled.
+  # This is commented out by default because this requires network I/O to validate URLs, so it is
+  # inherently not exactly reproducible. But this plugin is none-the-less helpful at detecting
+  # incorrect URLs.
+#  - htmlproofer:
+#      raise_error: True
+site_name: Devops overseer
+copyright: Copyright &copy; 2025 mot0ko
+# GitHub Specific Configuration.
+repo_name: devops.overseer
+repo_url: https://github.com/mot0ko/devops.overseer
+#edit_uri:

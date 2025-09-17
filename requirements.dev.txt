@@ -8,3 +8,7 @@ pytest
 tox
 isort
 black
+mkdocs
+mkdocs-material
+mkdocs-htmlproofer-plugin
+mkdocstrings

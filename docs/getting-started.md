@@ -1,6 +1,4 @@
-# devops.overseer
 
-A DevOps helper python module to monitor and automate all kinds of tasks related to either process, migrations, reporting, monitoring etc.
 
 # Installation
 
@@ -53,9 +51,3 @@ The accepted types for commit messages are:
 - docs
 - style
 - refactor
-- perf
-- test
-- build
-- ci
-- chore
-- revert
