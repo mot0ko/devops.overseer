@@ -12,3 +12,4 @@ mkdocs
 mkdocs-material
 mkdocs-htmlproofer-plugin
 mkdocstrings
+flake8
