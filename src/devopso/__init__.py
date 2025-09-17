@@ -12,6 +12,14 @@ def _check_app_resources_directories():
     _log = logging.getLogger("boot")
     _log.debug("checking directories (main config one already checked for logging)")
 
+    _log.debug("checking configurations")
+    config_dir = Path.home() / ".config" / "devops-overseer" / "configs"
+    config_dir.mkdir(parents=True, exist_ok=True)
+
+    _log.debug("checking clients configurations")
+    config_dir = Path.home() / ".config" / "devops-overseer" / "configs" / "clients"
+    config_dir.mkdir(parents=True, exist_ok=True)
+
 
 def _configure_logging():
     """Configure logging once, at first import of the package."""
