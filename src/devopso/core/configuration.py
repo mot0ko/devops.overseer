@@ -11,6 +11,36 @@ import yaml
 _log = logging.getLogger("configuration")
 
 
+class Error(Exception):
+    """
+    Exception raised for errors in the devopso configuration.
+
+    This error is raised when a configuration file cannot be parsed,
+    validated, or otherwise fails to meet expected requirements.
+
+    Attributes:
+        path (str): Path to the configuration file where the error occurred.
+        body (str): The detailed error message or context for the failure.
+    """
+
+    def __init__(self, path: str, body: str):
+        """
+        Initialize a configuration error.
+
+        Args:
+            path (str): The path to the configuration file that caused the error.
+            body (str): A descriptive error message or problematic content.
+                        Only the first 500 characters are included in the
+                        exception message for readability.
+
+        Example:
+            >>> raise Error("/etc/devopso/config.yml", "Missing required field 'logger'")
+        """
+        super().__init__(f"devopso configuration error in {path}: {body[:500]}")
+        self.path = path
+        self.body = body
+
+
 class Configured:
     def __init__(self, path: str = "") -> None:
         self._conf: Dict[str, Any] = {}
@@ -64,7 +94,7 @@ class Configuration:
             with file_path.open("r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
             if not isinstance(data, dict):
-                raise ValueError(f"YAML root must be a mapping (dict), got {type(data).__name__}")
+                raise Error(path, f"YAML root must be a mapping (dict), got {type(data).__name__}")
         else:
             _log.debug(f"no file to read: {file_path}")
         return data
@@ -92,7 +122,7 @@ class Configuration:
         _log.debug(f"reading configuration file: {path}")
         conf = {}
         if not path:
-            raise ValueError("The path provided is empty")
+            raise Error("no path", "The path provided is empty")
 
         p = Path(path)
         if p.suffix.lower() in {".yml", ".yaml"}:
