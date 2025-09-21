@@ -13,6 +13,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from devopso.core.configuration import Configuration
+from devopso.core.configuration import Error as ConfigurationError
 from devopso.core.logging import ConfiguredLogger
 
 
@@ -77,15 +78,7 @@ class RestClient(ConfiguredLogger):
         self.base_url = base_url
         self.timeout_s = timeout_s
 
-        # Load credentials
-        auth = Configuration.read_yaml(Path(self._conf["credentials"]).expanduser().resolve(strict=False))
-
-        login = auth["apps"]["atlassian"]["login"]
-        token = auth["apps"]["atlassian"]["api-token"]
-
-        raw = f"{login}:{token}".encode("utf-8")
-        b64 = base64.b64encode(raw).decode("utf-8")
-        self._auth_header = {"Authorization": f"Basic {b64}"}
+        self._read_credentials()
 
         # Session with retries
         self.session = requests.Session()
@@ -109,6 +102,33 @@ class RestClient(ConfiguredLogger):
         }
         if extra_headers:
             self._base_headers.update(extra_headers)
+
+    def _read_credentials(self) -> None:
+        # Load credentials
+        if "credentials" in self._conf:
+            creds_conf = self._conf["credentials"]
+            app_credentials = {}
+            credentials = {}
+
+            if "path" in creds_conf:
+                app_credentials = Configuration.read_configuration(Path(creds_conf["path"]).expanduser().resolve(strict=False))
+
+            if not app_credentials:
+                raise ConfigurationError(self._conf_path, "missing app credentials configuration")
+
+            if "app" in creds_conf and creds_conf["app"] in app_credentials["apps"]:
+                credentials = app_credentials["apps"][creds_conf["app"]]
+
+            if not credentials:
+                raise ConfigurationError(self._conf_path, "missing credentials configuration")
+
+            if "auth-type" not in credentials:
+                raise ConfigurationError(self._conf_path, "missing authentication type")
+
+            if credentials["auth-type"] == "basic":
+                raw = f"{credentials["login"]}:{credentials["api-token"]}".encode("utf-8")
+                b64 = base64.b64encode(raw).decode("utf-8")
+                self._auth_header = {"Authorization": f"Basic {b64}"}
 
     def _request(
         self,
@@ -144,6 +164,10 @@ class RestClient(ConfiguredLogger):
 
         url = f"{self.base_url}{path}"
         self.debug(f"calling on {url}")
+
+        if not self._auth_header:
+            raise ConfigurationError(self._conf_path, "missing authentication")
+
         headers = {**self._base_headers, **self._auth_header}
 
         resp = self.session.request(
