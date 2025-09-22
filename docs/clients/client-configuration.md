@@ -22,6 +22,8 @@ include:
   - Project-specific config in `./.devops-overseer/`
   - Centralized config in `$HOME/.config/devops-overseer/`
 
+Usually the credentials configuration will be stored in those, as for base-urls, because they change from user to user and are defined in the [user specific fields section](#user-specific-fields).
+
 ---
 
 ### `logger`
@@ -87,5 +89,26 @@ endpoints:
 - **Example:**
   - `myself`: the `myself` example is often present in REST APIs giving access to your own profile (like Atlassian for example).
   - `path`: relative URL path (`/rest/api/3/myself`).
+
+---
+
+## User specific fields
+
+---
+
+### `base-url`
+```yaml
+base-url: <base-url>
+```
+- **Purpose:** the `base-url` is literally the base url when you visit you tool instance.
+- **Default/Example:** `"https://api.github.com"` for github.
+
+---
+
+### `credentials`
+```yaml
+credentials:
+```
+- **Purpose:** the `credentials` contains the credentials/authentication configuration and is defined in the credentials documentation page.
 
 ---
