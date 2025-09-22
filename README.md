@@ -60,6 +60,17 @@ The accepted types for commit messages are:
 - chore
 - revert
 
+## Commands
+
+* `devops-overseer` - CLI call (parameters will come).
+
+## Project layout
+
+    mkdocs.yml    # The configuration file.
+    docs/         # mkdocs documentation
+    src/          # main source directory
+    tests/        # unit tests directory
+
 # Full documentation
 
 You can find the full documentation [here](https://mot0ko.github.io/devops.overseer/)
