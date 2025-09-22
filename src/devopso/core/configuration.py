@@ -42,7 +42,23 @@ class Error(Exception):
 
 
 class Configured:
+    """
+    Base class for loading and managing configuration files.
+
+    This class attempts to load a YAML configuration file from the given path.
+    If the file cannot be found at the provided path, it falls back to looking
+    in the `devopso` package resources.
+    """
+
     def __init__(self, path: str = "") -> None:
+        """
+        Initialize the configuration loader.
+
+        Args:
+            path (str, optional): Path to the configuration file. Can be an absolute
+                path or a relative path to a resource within the `devopso` package.
+                Defaults to an empty string.
+        """
         self._conf: Dict[str, Any] = {}
         self._conf_path = path
         if not self.read_configuration():
@@ -50,6 +66,17 @@ class Configured:
             self.read_configuration()
 
     def read_configuration(self) -> bool:
+        """
+        Attempt to read a YAML configuration file.
+
+        The method checks whether the configured path points to an existing
+        `.yml` or `.yaml` file. If found, it loads the configuration into
+        `self._conf`.
+
+        Returns:
+            bool: True if the configuration file was successfully read,
+            False otherwise.
+        """
         if self._conf_path:
             p = Path(self._conf_path)
             if p.is_file() and p.suffix.lower() in {".yml", ".yaml"}:
