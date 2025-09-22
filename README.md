@@ -59,3 +59,7 @@ The accepted types for commit messages are:
 - ci
 - chore
 - revert
+
+# Full documentation
+
+You can find the full documentation [here](https://mot0ko.github.io/devops.overseer/)
