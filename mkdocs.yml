@@ -3,6 +3,8 @@ strict: false
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Detailed documentation:
+    - Client configuration: clients/client-configuration.md
 theme:
   name: material
   # By default, fonts are pulled from Google on the Internet. To support offline usage, this is
