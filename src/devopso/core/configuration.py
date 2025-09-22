@@ -89,8 +89,11 @@ class Configuration:
     """
     Utility class for reading and parsing YAML configuration files.
 
-    This class provides static helpers to load configuration files into
-    Python dictionaries, ensuring that the root of the YAML file is a mapping.
+    This class provides static helpers to:
+    - Load YAML configuration files into Python dictionaries.
+    - Ensure that the root of the YAML file is a mapping (dict).
+    - Support recursive includes for composing configurations.
+    - Expand environment variables and user home shortcuts in strings.
     """
 
     @staticmethod
@@ -99,15 +102,16 @@ class Configuration:
         Read a YAML file and return its contents as a Python dictionary.
 
         Args:
-            path: Filesystem path to the YAML file. Can be a string or
-                any object implementing the ``os.PathLike`` interface,
-                such as ``pathlib.Path``.
+            path (Union[str, os.PathLike[str]]): Filesystem path to the YAML
+                file. Can be a string or any object implementing the
+                ``os.PathLike`` interface, such as ``pathlib.Path``.
 
         Returns:
-            dict[str, Any]: Parsed YAML content as a dictionary.
+            Dict[str, Any]: Parsed YAML content as a dictionary.
 
         Raises:
-            FileNotFoundError: If the file does not exist.
+            FileNotFoundError: If the file does not exist in both the given
+                path and the fallback ``devopso`` package resources.
             ValueError: If the root of the YAML file is not a dictionary.
             yaml.YAMLError: If the YAML file cannot be parsed.
         """
@@ -130,20 +134,24 @@ class Configuration:
     def read_configuration(
         path: Union[str, os.PathLike[str]],
         read_includes: bool = False,
-        expand_strs=False,
+        expand_strs: bool = False,
     ) -> Dict[str, Any]:
         """
-        Attempt to read a YAML configuration file.
+        Load a configuration file with optional support for includes and string expansion.
 
         Args:
-            path: Filesystem path to the configuration file. Must be a `.yml`
-                or `.yaml` file.
+            path (Union[str, os.PathLike[str]]): Path to the configuration file.
+                Must be a `.yml` or `.yaml` file.
+            read_includes (bool, optional): If True, process the ``include`` key
+                recursively, merging additional configuration files. Defaults to False.
+            expand_strs (bool, optional): If True, expand environment variables
+                and user home shortcuts (``~``) in string values. Defaults to False.
 
         Returns:
-            bool: True if the configuration file was successfully read and
-            stored in `self._conf`, False otherwise.
+            Dict[str, Any]: The loaded configuration dictionary.
 
         Raises:
+            Error: If the provided path is empty.
             ValueError: If the YAML file is not a mapping (dict) at the root.
         """
         _log.debug(f"reading configuration file: {path}")
@@ -164,7 +172,7 @@ class Configuration:
             elif isinstance(conf["include"], str):
                 conf = conf | Configuration.read_configuration(conf["include"])
             else:
-                _log.debug("No type")
+                _log.debug("Unsupported type for 'include'")
         else:
             _log.debug("no include")
 
@@ -175,8 +183,20 @@ class Configuration:
 
     @staticmethod
     def expand_strs(obj):
+        """
+        Recursively expand environment variables and user home shortcuts in strings.
+
+        Args:
+            obj (Any): A string, dictionary, list, or nested structure
+                containing strings.
+
+        Returns:
+            Any: The same structure as the input, with all string values
+            expanded (e.g., ``~/path`` → ``/home/user/path``,
+            ``${VAR}`` → environment variable value).
+        """
         if isinstance(obj, str):
-            return os.path.expandvars(os.path.expanduser(obj))  # replaces ${VAR} with env values
+            return os.path.expandvars(os.path.expanduser(obj))
         if isinstance(obj, dict):
             return {k: Configuration.expand_strs(v) for k, v in obj.items()}
         if isinstance(obj, list):
