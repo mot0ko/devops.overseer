@@ -65,7 +65,7 @@ class RESTClientObject:
         # https://github.com/shazow/urllib3/blob/f9409436f83aeb79fbaf090181cd81b784f1b8ce/urllib3/poolmanager.py#L75  # noqa: E501
         # https://github.com/shazow/urllib3/blob/f9409436f83aeb79fbaf090181cd81b784f1b8ce/urllib3/connectionpool.py#L680  # noqa: E501
         # Custom SSL certificates and client certificates: http://urllib3.readthedocs.io/en/latest/advanced-usage.html  # noqa: E501
-        
+
         # cert_reqs
         if configuration.verify_ssl:
             cert_reqs = ssl.CERT_REQUIRED
@@ -136,7 +136,6 @@ class RESTClientObject:
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
         """
-        print( url )
         method = method.upper()
         assert method in [
             'GET',
