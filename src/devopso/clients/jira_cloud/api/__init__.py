@@ -16,6 +16,7 @@ from devopso.clients.jira_cloud.api.filters_api import FiltersApi
 from devopso.clients.jira_cloud.api.group_and_user_picker_api import GroupAndUserPickerApi
 from devopso.clients.jira_cloud.api.groups_api import GroupsApi
 from devopso.clients.jira_cloud.api.issue_attachments_api import IssueAttachmentsApi
+from devopso.clients.jira_cloud.api.issue_bulk_operations_api import IssueBulkOperationsApi
 from devopso.clients.jira_cloud.api.issue_comment_properties_api import IssueCommentPropertiesApi
 from devopso.clients.jira_cloud.api.issue_comments_api import IssueCommentsApi
 from devopso.clients.jira_cloud.api.issue_custom_field_associations_api import IssueCustomFieldAssociationsApi
