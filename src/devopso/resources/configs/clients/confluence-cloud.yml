@@ -3,6 +3,7 @@ include:
 - "./.devops-overseer/confluence-cloud.yml"
 - "~/.config/devops-overseer/confluence-cloud.yml"
 - "~/.config/devops-overseer/configs/clients/confluence-cloud.yml"
+- "~/.config/devops-overseer/configs/clients/atlassian.yml"
 logger:
   name: confluence-cloud
 user-agent: devops-overseer-RestClient/1.0
