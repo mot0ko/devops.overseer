@@ -78,3 +78,28 @@ class JiraCloud(RestAdapter):
         except Exception as e:
             a.error("Exception when calling JiraCloud->get_user_by_account_id: %s" % e)
         return api_response
+
+    @staticmethod
+    def get_users_from_group_id(group_id: str):
+        """Retrieve all users belonging to a specific Jira group.
+
+        Args:
+            group_id (str): The unique identifier of the Jira group.
+
+        Returns:
+            devopso.clients.jira_cloud.models.PageBeanUserDetails | None:
+                A paginated response containing user details, or ``None`` if an error occurred.
+
+        Logs:
+            - Debug information with the formatted API response on success.
+            - Error message if the API call fails.
+        """
+        api_response = None
+        a = JiraCloud()
+        try:
+            api_response = devopso.clients.jira_cloud.GroupsApi(a.client).get_users_from_group(group_id=group_id)
+            a.debug("The response of JiraCloud->get_users_from_group_id:")
+            a.debug(pformat(api_response))
+        except Exception as e:
+            a.error("Exception when calling JiraCloud->get_users_from_group_id: %s" % e)
+        return api_response
