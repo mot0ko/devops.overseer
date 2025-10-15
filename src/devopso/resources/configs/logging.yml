@@ -35,6 +35,10 @@ loggers:
     handlers: [console, file]
     level: DEBUG
     propagate: false
+  jira-cloud:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
   boot:
     handlers: [console, file]
     level: DEBUG
