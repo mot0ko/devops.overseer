@@ -1,4 +1,3 @@
-from typing import Any, Dict
 from pprint import pformat
 
 from devopso.core.rest_adapter import RestAdapter
