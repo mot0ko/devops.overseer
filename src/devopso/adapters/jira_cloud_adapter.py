@@ -53,3 +53,28 @@ class JiraCloud(RestAdapter):
         except Exception as e:
             a.error("Exception when calling JiraCloud->get_myself: %s" % e)
         return api_response
+
+    @staticmethod
+    def get_user_by_account_id(account_id: str):
+        """Retrieve user information by Jira account ID.
+
+        Args:
+            account_id (str): The unique account ID of the user to retrieve.
+
+        Returns:
+            devopso.clients.jira_cloud.models.User | None:
+                The user object corresponding to the given account ID, or ``None`` if an error occurred.
+
+        Logs:
+            - Debug information with the formatted API response on success.
+            - Error message if the API call fails.
+        """
+        api_response = None
+        a = JiraCloud()
+        try:
+            api_response = devopso.clients.jira_cloud.UsersApi(a.client).get_user(account_id=account_id)
+            a.debug("The response of JiraCloud->get_user_by_account_id:")
+            a.debug(pformat(api_response))
+        except Exception as e:
+            a.error("Exception when calling JiraCloud->get_user_by_account_id: %s" % e)
+        return api_response
