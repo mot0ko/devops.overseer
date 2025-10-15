@@ -71,7 +71,7 @@ class JiraCloud(RestAdapter):
         api_response = None
         a = JiraCloud()
         try:
-            api_response = devopso.clients.jira_cloud.UsersApi(a.client).get_user(account_id=account_id)
+            api_response = devopso.clients.jira_cloud.UsersApi(a.client).get_user(account_id=account_id, expand="groups")
             a.debug("The response of JiraCloud->get_user_by_account_id:")
             a.debug(pformat(api_response))
         except Exception as e:
