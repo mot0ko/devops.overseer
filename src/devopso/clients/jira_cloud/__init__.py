@@ -1222,7 +1222,7 @@ from devopso.clients.jira_cloud.models.compound_clause import CompoundClause as 
 from devopso.clients.jira_cloud.models.condition_group_configuration import ConditionGroupConfiguration as ConditionGroupConfiguration
 from devopso.clients.jira_cloud.models.condition_group_payload import ConditionGroupPayload as ConditionGroupPayload
 from devopso.clients.jira_cloud.models.condition_group_update import ConditionGroupUpdate as ConditionGroupUpdate
-from devopso.clients.jira_cloud.models.configuration import Configuration as Configuration
+# from devopso.clients.jira_cloud.models.configuration import Configuration as Configuration
 from devopso.clients.jira_cloud.models.configurations_list_parameters import ConfigurationsListParameters as ConfigurationsListParameters
 from devopso.clients.jira_cloud.models.connect_custom_field_value import ConnectCustomFieldValue as ConnectCustomFieldValue
 from devopso.clients.jira_cloud.models.connect_custom_field_values import ConnectCustomFieldValues as ConnectCustomFieldValues
