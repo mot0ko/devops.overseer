@@ -47,7 +47,7 @@ class JiraCloud(RestAdapter):
         api_response = None
         a = JiraCloud()
         try:
-            api_response = devopso.clients.jira_cloud.MyselfApi(a.client).get_current_user(expand="groups")
+            api_response = devopso.clients.jira_cloud.MyselfApi(a.client).get_current_user(expand="groups,applicationRoles")
             a.debug("The response of JiraCloud->get_myself:")
             a.debug(pformat(api_response))
         except Exception as e:
