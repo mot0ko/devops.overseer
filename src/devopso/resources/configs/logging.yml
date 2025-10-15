@@ -39,6 +39,10 @@ loggers:
     handlers: [console, file]
     level: DEBUG
     propagate: false
+  atlassian:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
   boot:
     handlers: [console, file]
     level: DEBUG
