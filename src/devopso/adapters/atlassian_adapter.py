@@ -1,6 +1,6 @@
-from devopso.core.logging import ConfiguredLogger
 from devopso.adapters.jira_cloud_adapter import JiraCloud
 from devopso.clients.jira_cloud.models.user import User
+from devopso.core.logging import ConfiguredLogger
 
 
 class Atlassian(ConfiguredLogger):
@@ -53,7 +53,6 @@ class Atlassian(ConfiguredLogger):
             dict[str, User]: A dictionary mapping display names to `User` objects
             representing the teammates of the given user.
         """
-        a = Atlassian()
         users = {}
         user_account = JiraCloud.get_user_by_account_id(user_id)
         for group in user_account.groups.items:
