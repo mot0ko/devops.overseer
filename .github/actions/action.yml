@@ -1,0 +1,6 @@
+# action.yml
+name: 'Python library'
+description: 'Builds and executes tests to build a python C++ library'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
