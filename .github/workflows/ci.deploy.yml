@@ -1,3 +1,5 @@
+name: Deploy wheel to PyPI
+
 on:
   push:
     branches:
