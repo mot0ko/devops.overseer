@@ -68,18 +68,3 @@ exclude = '''
   )/
 )
 '''
-
-[tool.flake8]
-max-line-length = 180
-exclude = [
-    ".git",
-    ".mypy_cache",
-    ".venv",
-    ".local",
-    "build",
-    "dist",
-    "docs",
-    "resources",
-    "src/devopso/clients",
-    ".tox"
-]
