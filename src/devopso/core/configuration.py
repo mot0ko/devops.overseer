@@ -129,6 +129,35 @@ class Configuration:
         else:
             _log.debug(f"no file to read: {file_path}")
         return data
+    
+    @staticmethod
+    def write_yaml(path: Union[str, os.PathLike[str]], data: Dict[str, Any]) -> None:
+        """
+        Write a Python dictionary to a YAML file.
+
+        Args:
+            path (Union[str, os.PathLike[str]]): Filesystem path to the YAML
+                file. Can be a string or any object implementing the
+                ``os.PathLike`` interface, such as ``pathlib.Path``.
+            data (Dict[str, Any]): The data to write to the file. Must be a
+                dictionary, which will be serialized as a YAML mapping.
+
+        Raises:
+            TypeError: If the ``data`` argument is not a dictionary.
+            yaml.YAMLError: If the data cannot be serialized to YAML.
+            OSError: If the file cannot be written due to I/O issues.
+        """
+        file_path = Path(os.path.expanduser(path))
+        _log.debug(f"writing yaml file: {file_path}")
+
+        if not isinstance(data, dict):
+            raise TypeError(f"Expected dictionary for YAML output, got {type(data).__name__}")
+
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with file_path.open("w", encoding="utf-8") as f:
+            yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+
 
     @staticmethod
     def read_configuration(
