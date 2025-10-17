@@ -9,6 +9,7 @@ description = "DevOps overseer to manage process automations and conformity"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.9"
 authors = [{ name = "mot0ko", email = "dourval.clement@gmail.com" }]
+license = { file = "LICENSE" }
 
 # Runtime dependencies
 dependencies = [
@@ -27,6 +28,9 @@ Source = "https://github.com/mot0ko/devops.overseer"
 Issues = "https://github.com/mot0ko/devops.overseer/issues"
 
 [project.entry-points."devopso.plugins"]
+
+[tool.setuptools]
+license-files = ["LICENSE"]
 
 # (Optional) Fine-tune package discovery if your code lives in src/
 [tool.setuptools.packages.find]
