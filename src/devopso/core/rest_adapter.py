@@ -89,7 +89,7 @@ class RestAdapter(ConfiguredLogger):
             if "auth-type" not in credentials:
                 raise ConfigurationError(self._conf_path, "missing authentication type")
 
-            if credentials["auth-type"] == "basic":
+            if credentials["auth-type"] == "Basic":
                 raw = f"{credentials['login']}:{credentials['api-token']}".encode("utf-8")
                 b64 = base64.b64encode(raw).decode("utf-8")
                 self._auth_header = {"Authorization": f"Basic {b64}"}
