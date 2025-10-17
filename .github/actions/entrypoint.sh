@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./bootstrap.sh $@
+./scripts/ci.deploy.build.bootstrap.sh $@

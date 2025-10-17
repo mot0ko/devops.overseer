@@ -10,9 +10,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-RUN pip install wheel setuptools pip --upgrade \
-  && pip install -r requirements.dev.txt \
-  && pip install -r requirements.txt
+RUN pip install wheel setuptools pip --upgrade
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
