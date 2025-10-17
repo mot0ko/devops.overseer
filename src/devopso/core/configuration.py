@@ -129,7 +129,7 @@ class Configuration:
         else:
             _log.debug(f"no file to read: {file_path}")
         return data
-    
+
     @staticmethod
     def write_yaml(path: Union[str, os.PathLike[str]], data: Dict[str, Any]) -> None:
         """
@@ -157,7 +157,6 @@ class Configuration:
 
         with file_path.open("w", encoding="utf-8") as f:
             yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
-
 
     @staticmethod
     def read_configuration(
