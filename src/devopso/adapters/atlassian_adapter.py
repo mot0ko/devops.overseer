@@ -1,6 +1,8 @@
 from devopso.adapters.jira_cloud_adapter import JiraCloud
 from devopso.clients.jira_cloud.models.user import User
 from devopso.core.logging import ConfiguredLogger
+from devopso.adapters.confluence_cloud_adapter import ConfluenceCloud
+from datetime import datetime
 
 
 class Atlassian(ConfiguredLogger):
@@ -76,3 +78,86 @@ class Atlassian(ConfiguredLogger):
         for account_x in group_members.values:
             users[account_x.display_name] = account_x
         return users
+
+    @staticmethod
+    def update_or_create_confluence_page(space_key: str, parent_title: str, title: str, body: str, representation: str):
+        """Create or update a Confluence page in the specified space.
+
+        If the page does not exist, it is created under the provided parent page.
+        If the page already exists, its content is updated to the new body and title.
+
+        Args:
+            space_key (str): The key of the Confluence space where the page resides.
+            parent_title (str): The title of the parent page to attach a new page under if creation is needed.
+            title (str): The title of the page to update or create.
+            body (str): The Confluence Wiki or Storage formatted content of the page.
+            representation (str): The content representation format (e.g., 'storage' or 'wiki').
+
+        Returns:
+            None: The function logs progress and errors internally via `ConfiguredLogger`.
+        """
+        a = Atlassian()
+
+        spaces_found = ConfluenceCloud.get_spaces([space_key])
+        if spaces_found.results is None or len(spaces_found.results) == 0:
+            a.error("No space matches the specs for updating.")
+            return
+
+        a.info("fetching page")
+        pages_found = ConfluenceCloud.get_pages_in_space(int(spaces_found.results[0].id), title)
+        if pages_found.results is None or len(pages_found.results) == 0:
+            parent_found = ConfluenceCloud.get_pages_in_space(int(spaces_found.results[0].id), parent_title)
+            if parent_found.results is None or len(parent_found.results) == 0:
+                a.error("No page or parent page matches the specs for updating.")
+                return
+            a.info("creating page")
+            ConfluenceCloud.create_page(spaces_found.results[0].id, title, representation, " ", parent_found.results[0].id)
+
+            a.info("fetching page again")
+            pages_found = ConfluenceCloud.get_pages_in_space(int(spaces_found.results[0].id), title)
+            if pages_found.results is None or len(pages_found.results) == 0:
+                a.error("creation failed")
+                return
+
+        a.info("updating page")
+        ConfluenceCloud.update_page(pages_found.results[0].id, title, representation, body, int(pages_found.results[0].version.number) + 1)
+
+    @staticmethod
+    def snapshot_confluence_page(space_key: str, page_title: str, add_time: bool = False):
+        """Create a snapshot (version copy) of an existing Confluence page.
+
+        This method duplicates a given Confluence page under the same parent,
+        using the current date (and optionally time) in the title to distinguish it.
+        Useful for versioned backups of periodic reports or dashboards.
+
+        Args:
+            space_key (str): The key of the Confluence space containing the page.
+            page_title (str): The title of the page to snapshot.
+            add_time (bool, optional): Whether to append the current time (HH-MM)
+                to the snapshot title. Defaults to False.
+
+        Returns:
+            None: The function logs progress and errors internally via `ConfiguredLogger`.
+        """
+        a = Atlassian()
+
+        spaces_found = ConfluenceCloud.get_spaces([space_key])
+        if spaces_found.results is None or len(spaces_found.results) == 0:
+            a.error("No space matches the specs for updating.")
+            return
+
+        a.info("fetching page")
+        pages_found = ConfluenceCloud.get_pages_in_space(int(spaces_found.results[0].id), page_title)
+        if pages_found.results is None or len(pages_found.results) == 0:
+            a.error("No page or parent page matches the specs for updating.")
+            return
+
+        today = datetime.today()
+        snap_title = f"{page_title} {today.year}-{today.strftime('%B')}-{today.day}"
+        if add_time is True:
+            snap_title = f"{snap_title}-{today.hour:02d}-{today.minute:02d}"
+
+        page_with_body = ConfluenceCloud.get_page_by_id(pages_found.results[0].id)
+        Atlassian.update_or_create_confluence_page(
+            space_key, page_title, snap_title, page_with_body.body.storage.value, page_with_body.body.storage.representation
+        )
