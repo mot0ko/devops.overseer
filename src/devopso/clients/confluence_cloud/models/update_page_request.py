@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from devopso.clients.confluence_cloud.models.create_page_request_body import CreatePageRequestBody
+from devopso.clients.confluence_cloud.models.page_body_write import PageBodyWrite
 from devopso.clients.confluence_cloud.models.update_page_request_version import UpdatePageRequestVersion
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,7 +34,7 @@ class UpdatePageRequest(BaseModel):
     space_id: Optional[Any] = Field(default=None, description="ID of the containing space.  This currently **does not support moving the page to a different space**.", alias="spaceId")
     parent_id: Optional[Any] = Field(default=None, description="ID of the parent content.  This allows the page to be moved under a different parent within the same space.", alias="parentId")
     owner_id: Optional[Any] = Field(default=None, description="Account ID of the page owner.  This allows page ownership to be transferred to another user.", alias="ownerId")
-    body: CreatePageRequestBody
+    body: PageBodyWrite
     version: UpdatePageRequestVersion
     __properties: ClassVar[List[str]] = ["id", "status", "title", "spaceId", "parentId", "ownerId", "body", "version"]
 
@@ -123,7 +123,7 @@ class UpdatePageRequest(BaseModel):
             "spaceId": obj.get("spaceId"),
             "parentId": obj.get("parentId"),
             "ownerId": obj.get("ownerId"),
-            "body": CreatePageRequestBody.from_dict(obj["body"]) if obj.get("body") is not None else None,
+            "body": PageBodyWrite.from_dict(obj["body"]) if obj.get("body") is not None else None,
             "version": UpdatePageRequestVersion.from_dict(obj["version"]) if obj.get("version") is not None else None
         })
         return _obj

@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from devopso.clients.confluence_cloud.models.create_page_request_body import CreatePageRequestBody
+from devopso.clients.confluence_cloud.models.page_body_write import PageBodyWrite
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,7 +31,7 @@ class CreatePageRequest(BaseModel):
     status: Optional[StrictStr] = Field(default=None, description="The status of the page, published or draft.")
     title: Optional[StrictStr] = Field(default=None, description="Title of the page, required if page status is not draft.")
     parent_id: Optional[StrictStr] = Field(default=None, description="The parent content ID of the page. If the `root-level` query parameter is set to false and a value is  not supplied for this parameter, then the space homepage's ID will be used. If the `root-level` query  parameter is set to true, then a value may not be supplied for this parameter.", alias="parentId")
-    body: Optional[CreatePageRequestBody] = None
+    body: Optional[PageBodyWrite] = None
     subtype: Optional[StrictStr] = Field(default=None, description="The subtype of the page. Provide the subtype live to create a live doc or no subtype to create a page.")
     __properties: ClassVar[List[str]] = ["spaceId", "status", "title", "parentId", "body", "subtype"]
 
@@ -113,7 +113,7 @@ class CreatePageRequest(BaseModel):
             "status": obj.get("status"),
             "title": obj.get("title"),
             "parentId": obj.get("parentId"),
-            "body": CreatePageRequestBody.from_dict(obj["body"]) if obj.get("body") is not None else None,
+            "body": PageBodyWrite.from_dict(obj["body"]) if obj.get("body") is not None else None,
             "subtype": obj.get("subtype")
         })
         return _obj

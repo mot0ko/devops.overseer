@@ -132,7 +132,6 @@ __all__ = [
     "CreateInlineCommentModelInlineCommentProperties",
     "CreatePage200Response",
     "CreatePageRequest",
-    "CreatePageRequestBody",
     "CreateSmartLink200Response",
     "CreateSmartLinkRequest",
     "CreateSpace201Response",
@@ -230,7 +229,6 @@ __all__ = [
     "PageBulk",
     "PageCommentModel",
     "PageInlineCommentModel",
-    "PageNestedBodyWrite",
     "PageSingle",
     "PageSortOrder",
     "PageVersion",
@@ -420,7 +418,6 @@ from devopso.clients.confluence_cloud.models.create_inline_comment_model import 
 from devopso.clients.confluence_cloud.models.create_inline_comment_model_inline_comment_properties import CreateInlineCommentModelInlineCommentProperties as CreateInlineCommentModelInlineCommentProperties
 from devopso.clients.confluence_cloud.models.create_page200_response import CreatePage200Response as CreatePage200Response
 from devopso.clients.confluence_cloud.models.create_page_request import CreatePageRequest as CreatePageRequest
-from devopso.clients.confluence_cloud.models.create_page_request_body import CreatePageRequestBody as CreatePageRequestBody
 from devopso.clients.confluence_cloud.models.create_smart_link200_response import CreateSmartLink200Response as CreateSmartLink200Response
 from devopso.clients.confluence_cloud.models.create_smart_link_request import CreateSmartLinkRequest as CreateSmartLinkRequest
 from devopso.clients.confluence_cloud.models.create_space201_response import CreateSpace201Response as CreateSpace201Response
@@ -518,7 +515,6 @@ from devopso.clients.confluence_cloud.models.page_body_write import PageBodyWrit
 from devopso.clients.confluence_cloud.models.page_bulk import PageBulk as PageBulk
 from devopso.clients.confluence_cloud.models.page_comment_model import PageCommentModel as PageCommentModel
 from devopso.clients.confluence_cloud.models.page_inline_comment_model import PageInlineCommentModel as PageInlineCommentModel
-from devopso.clients.confluence_cloud.models.page_nested_body_write import PageNestedBodyWrite as PageNestedBodyWrite
 from devopso.clients.confluence_cloud.models.page_single import PageSingle as PageSingle
 from devopso.clients.confluence_cloud.models.page_sort_order import PageSortOrder as PageSortOrder
 from devopso.clients.confluence_cloud.models.page_version import PageVersion as PageVersion
