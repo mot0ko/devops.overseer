@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy wheel
         id: deploy
-        uses: mot0ko/ci.github-action.twine-upload@v1.0.1
+        uses: mot0ko/ci.github-action.twine-upload@v1.6.0
         env:
           TWINE_USER: __token__
           TWINE_PASS: ${{ secrets.PYPI_API_TOKEN }}
