@@ -27,12 +27,10 @@ jobs:
 
       - name: Deploy wheel
         id: deploy
-        uses: mot0ko/ci.github-action.twine-upload@v1.0.0
+        uses: mot0ko/ci.github-action.twine-upload@v1.0.1
         env:
           TWINE_USER: __token__
           TWINE_PASS: ${{ secrets.PYPI_API_TOKEN }}
-        with:
-          dry-run: "true"
 
       - name: Print result
         run: |
