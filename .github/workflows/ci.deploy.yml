@@ -25,12 +25,15 @@ jobs:
         id: build
         uses: ./.github/actions
 
-      - name: Publish to PyPI
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-          pip install -U packaging
-          twine upload dist/*
+      - name: Deploy wheel
+        id: deploy
+        uses: mot0ko/ci.github-action.twine-upload@v1.0.0
         env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          TWINE_USER: __token__
+          TWINE_PASS: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          dry-run: "true"
+
+      - name: Print result
+        run: |
+          echo "Upload success: ${{ steps.deploy.outputs.success }}"
