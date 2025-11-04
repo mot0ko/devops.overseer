@@ -153,7 +153,7 @@ class Atlassian(ConfiguredLogger):
             return
 
         today = datetime.today()
-        snap_title = f"{page_title} {today.year}-{today.strftime('%B')}-{today.day}"
+        snap_title = f"{page_title} {today.year:04d}-{today.month:02d}-{today.day:02d}"
         if add_time is True:
             snap_title = f"{snap_title}-{today.hour:02d}-{today.minute:02d}"
 
