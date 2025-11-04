@@ -43,6 +43,10 @@ loggers:
     handlers: [console, file]
     level: DEBUG
     propagate: false
+  github:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
   boot:
     handlers: [console, file]
     level: DEBUG
