@@ -13,3 +13,4 @@ mkdocs-material
 mkdocs-htmlproofer-plugin
 mkdocstrings
 flake8
+openapi-generator-cli
