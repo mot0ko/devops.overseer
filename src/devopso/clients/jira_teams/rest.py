@@ -150,10 +150,7 @@ class RESTClientObject:
             raise ApiValueError(
                 "body parameter cannot be used with post_params parameter."
             )
-        
-        print( url )
-        print( url )
-        print( url )
+
         post_params = post_params or {}
         headers = headers or {}
 
