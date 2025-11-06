@@ -47,6 +47,10 @@ loggers:
     handlers: [console, file]
     level: DEBUG
     propagate: false
+  jira-teams:
+    handlers: [console, file]
+    level: DEBUG
+    propagate: false
   boot:
     handlers: [console, file]
     level: DEBUG
