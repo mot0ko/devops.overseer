@@ -1,8 +1,10 @@
+from datetime import datetime
+
+from devopso.adapters.confluence_cloud_adapter import ConfluenceCloud
 from devopso.adapters.jira_cloud_adapter import JiraCloud
+from devopso.adapters.jira_teams_adapter import JiraTeams
 from devopso.clients.jira_cloud.models.user import User
 from devopso.core.logging import ConfiguredLogger
-from devopso.adapters.confluence_cloud_adapter import ConfluenceCloud
-from datetime import datetime
 
 
 class Atlassian(ConfiguredLogger):
@@ -35,8 +37,8 @@ class Atlassian(ConfiguredLogger):
 
         Returns:
             dict[str, User]: A dictionary mapping display names to `User` objects
-            representing the teammates of the current user, excluding those
-            in ignored groups.
+                representing the teammates of the current user, excluding those
+                in ignored groups.
         """
         return Atlassian.get_user_teammates(JiraCloud.get_myself().account_id, ignore_groups)
 
@@ -53,7 +55,7 @@ class Atlassian(ConfiguredLogger):
 
         Returns:
             dict[str, User]: A dictionary mapping display names to `User` objects
-            representing the teammates of the given user.
+                representing the teammates of the given user.
         """
         users = {}
         user_account = JiraCloud.get_user_by_account_id(user_id)
@@ -71,7 +73,7 @@ class Atlassian(ConfiguredLogger):
 
         Returns:
             dict[str, User]: A dictionary mapping display names to `User` objects
-            representing all members of the specified group.
+                representing all members of the specified group.
         """
         users = {}
         group_members = JiraCloud.get_users_from_group_id(group_id)
@@ -80,7 +82,7 @@ class Atlassian(ConfiguredLogger):
         return users
 
     @staticmethod
-    def update_or_create_confluence_page(space_key: str, parent_title: str, title: str, body: str, representation: str):
+    def update_or_create_confluence_page(space_key: str, parent_title: str, title: str, body: str, representation: str) -> None:
         """Create or update a Confluence page in the specified space.
 
         If the page does not exist, it is created under the provided parent page.
@@ -123,7 +125,7 @@ class Atlassian(ConfiguredLogger):
         ConfluenceCloud.update_page(pages_found.results[0].id, title, representation, body, int(pages_found.results[0].version.number) + 1)
 
     @staticmethod
-    def snapshot_confluence_page(space_key: str, page_title: str, add_time: bool = False):
+    def snapshot_confluence_page(space_key: str, page_title: str, add_time: bool = False) -> None:
         """Create a snapshot (version copy) of an existing Confluence page.
 
         This method duplicates a given Confluence page under the same parent,
@@ -161,3 +163,30 @@ class Atlassian(ConfiguredLogger):
         Atlassian.update_or_create_confluence_page(
             space_key, page_title, snap_title, page_with_body.body.storage.value, page_with_body.body.storage.representation
         )
+
+    @staticmethod
+    def get_team_members(org_id: str, team_name: str) -> dict[str, User]:
+        """Retrieve all members of a specific team in Jira.
+
+        Given an organization ID and a team name, this method finds the
+        matching team and returns a dictionary mapping display names to
+        `User` objects for all its members.
+
+        Args:
+            org_id (str): The organization identifier under which the team is defined.
+            team_name (str): The display name of the team for which members are requested.
+
+        Returns:
+            dict[str, User]: A dictionary mapping display names to `User` objects
+                representing all members of the specified team.
+        """
+        all_teams = JiraTeams.get_teams(org_id)
+
+        users: dict[str, User] = {}
+        for raw_team in all_teams.entities:
+            if raw_team.display_name == team_name:
+                team_members = JiraTeams.get_team_members(org_id, raw_team.team_id)
+                for team_member_id in team_members.results:
+                    team_member_account = JiraCloud.get_user_by_account_id(team_member_id.account_id)
+                    users[team_member_account.display_name] = team_member_account
+        return users
