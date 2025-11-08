@@ -142,6 +142,25 @@ class Atlassian(ConfiguredLogger):
         Returns:
             None: The function logs progress and errors internally via `ConfiguredLogger`.
         """
+        today = datetime.today()
+        snap_title = f"{page_title} {today.year:04d}-{today.month:02d}-{today.day:02d}"
+        if add_time is True:
+            snap_title = f"{snap_title}-{today.hour:02d}-{today.minute:02d}"
+        return Atlassian.snapshot_confluence_page(space_key, page_title, snap_title)
+
+    @staticmethod
+    def snapshot_confluence_page(space_key: str, page_title: str, snapshot_name) -> CreatePage200Response:
+        """Create a snapshot of a Confluence page using a provided snapshot title.
+
+        Args:
+            space_key (str): Confluence space key.
+            page_title (str): Title of the source page to snapshot.
+            snapshot_name (str): New title assigned to the snapshot page.
+
+        Returns:
+            CreatePage200Response | None: Response from snapshot creation,
+            or None on failure.
+        """
         a = Atlassian()
 
         spaces_found = ConfluenceCloud.get_spaces([space_key])
@@ -155,14 +174,9 @@ class Atlassian(ConfiguredLogger):
             a.error("No page or parent page matches the specs for updating.")
             return None
 
-        today = datetime.today()
-        snap_title = f"{page_title} {today.year:04d}-{today.month:02d}-{today.day:02d}"
-        if add_time is True:
-            snap_title = f"{snap_title}-{today.hour:02d}-{today.minute:02d}"
-
         page_with_body = ConfluenceCloud.get_page_by_id(pages_found.results[0].id)
         return Atlassian.update_or_create_confluence_page(
-            space_key, page_title, snap_title, page_with_body.body.storage.value, page_with_body.body.storage.representation
+            space_key, page_title, snapshot_name, page_with_body.body.storage.value, page_with_body.body.storage.representation
         )
 
     @staticmethod
