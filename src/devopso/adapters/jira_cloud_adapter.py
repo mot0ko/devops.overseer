@@ -1,7 +1,7 @@
 from pprint import pformat
 
-from devopso.core.rest_adapter import RestAdapter
 import devopso.clients.jira_cloud
+from devopso.core.rest_adapter import RestAdapter
 
 
 class JiraCloud(RestAdapter):
@@ -101,4 +101,57 @@ class JiraCloud(RestAdapter):
             a.debug(pformat(api_response))
         except Exception as e:
             a.error("Exception when calling JiraCloud->get_users_from_group_id: %s" % e)
+        return api_response
+
+    @staticmethod
+    def add_user_to_group(group_id: str, account_id: str):
+        """Add a Jira user to a specified group.
+
+        This method wraps the Jira Cloud REST API operation to add a user
+        to a group using the Groups API. It logs the API response and any
+        encountered errors.
+
+        Args:
+            group_id (str): The identifier of the target Jira group.
+            account_id (str): The account ID of the user to add.
+
+        Returns:
+            Any: The raw API response object returned by Jira Cloud, or None
+                if an error occurred.
+        """
+        api_response = None
+        a = JiraCloud()
+        try:
+            update_user_to_group_bean = {"accountId": account_id}
+            api_response = devopso.clients.jira_cloud.GroupsApi(a.client).add_user_to_group(update_user_to_group_bean, group_id=group_id)
+            a.debug("The response of JiraCloud->add_user_to_group:")
+            a.debug(pformat(api_response))
+        except Exception as e:
+            a.error("Exception when calling JiraCloud->add_user_to_group: %s" % e)
+        return api_response
+
+    @staticmethod
+    def remove_user_to_group(group_id: str, account_id: str):
+        """Remove a Jira user from a specified group.
+
+        This method wraps the Jira Cloud REST API operation to remove a user
+        from a group using the Groups API. It logs the API response and any
+        encountered errors.
+
+        Args:
+            group_id (str): The identifier of the target Jira group.
+            account_id (str): The account ID of the user to remove.
+
+        Returns:
+            Any: The raw API response object returned by Jira Cloud, or None
+                if an error occurred.
+        """
+        api_response = None
+        a = JiraCloud()
+        try:
+            api_response = devopso.clients.jira_cloud.GroupsApi(a.client).remove_user_from_group(account_id, group_id=group_id)
+            a.debug("The response of JiraCloud->remove_user_from_group:")
+            a.debug(pformat(api_response))
+        except Exception as e:
+            a.error("Exception when calling JiraCloud->remove_user_from_group: %s" % e)
         return api_response
