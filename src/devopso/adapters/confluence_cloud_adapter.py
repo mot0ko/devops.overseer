@@ -1,8 +1,9 @@
 from pprint import pformat
 
-from devopso.core.rest_adapter import RestAdapter
 import devopso.clients.confluence_cloud
 from devopso.clients.confluence_cloud.models import CreatePageRequest, PageBodyWrite, UpdatePageRequestVersion
+from devopso.clients.confluence_cloud.models.create_page200_response import CreatePage200Response
+from devopso.core.rest_adapter import RestAdapter
 
 
 class ConfluenceCloud(RestAdapter):
@@ -91,7 +92,7 @@ class ConfluenceCloud(RestAdapter):
         return api_response
 
     @staticmethod
-    def create_page(space_id: str, title: str, representation: str, wiki_body: str, parent_id: str):
+    def create_page(space_id: str, title: str, representation: str, wiki_body: str, parent_id: str) -> CreatePage200Response:
         """Create a new Confluence page.
 
         Args:
@@ -128,7 +129,7 @@ class ConfluenceCloud(RestAdapter):
         return api_response
 
     @staticmethod
-    def update_page(page_id: str, new_title: str, representation: str, new_body: str, new_version: int):
+    def update_page(page_id: str, new_title: str, representation: str, new_body: str, new_version: int) -> CreatePage200Response:
         """Update an existing Confluence page.
 
         Args:
