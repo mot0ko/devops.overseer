@@ -9,54 +9,55 @@ from devopso.core.logging import ConfiguredLogger
 
 
 class Atlassian(ConfiguredLogger):
-    """High-level adapter providing convenience methods for retrieving
-    user and group data from Atlassian (Jira Cloud) APIs.
+    """
+    High-level aggregator adapter providing convenience helper functions
+    over Jira Cloud, Jira Teams, and Confluence Cloud APIs.
 
-    This class leverages the `JiraCloud` adapter to aggregate user
-    and teammate information across groups, while inheriting structured
-    logging capabilities from `ConfiguredLogger`.
+    This class centralizes common operations such as:
+      • retrieving teammates by group
+      • fetching group accounts
+      • creating or updating Confluence pages
+      • generating snapshots of existing Confluence pages
+      • resolving all members of a Jira team
 
-    Attributes:
-        _DEFAULT_PATH_CONFIGURATION (str): Default path to the adapter's configuration file.
+    Logging is inherited from `ConfiguredLogger` and uses the adapter-specific
+    configuration file defined in `_DEFAULT_PATH_CONFIGURATION`.
     """
 
     _DEFAULT_PATH_CONFIGURATION = "resources/configs/adapters/atlassian.yml"
 
     def __init__(self) -> None:
-        """Initialize the Atlassian adapter.
+        """Initialize the Atlassian helper adapter.
 
-        Loads the logger configuration defined in the adapter's configuration file.
+        Loads logging configuration and prepares structured logger.
         """
         super().__init__(Atlassian._DEFAULT_PATH_CONFIGURATION)
 
     @staticmethod
     def get_current_user_teammates(ignore_groups: list[str]) -> dict[str, User]:
-        """Retrieve all teammates of the currently authenticated Jira user.
+        """Return teammates of the currently authenticated Jira user.
+
+        Teammates are defined as users sharing at least one group with
+        the current user, except for groups listed in `ignore_groups`.
 
         Args:
-            ignore_groups (list[str]): List of group names to exclude from the search.
+            ignore_groups (list[str]): Group names to exclude from search.
 
         Returns:
-            dict[str, User]: A dictionary mapping display names to `User` objects
-                representing the teammates of the current user, excluding those
-                in ignored groups.
+            dict[str, User]: Mapping of display name → User object.
         """
         return Atlassian.get_user_teammates(JiraCloud.get_myself().account_id, ignore_groups)
 
     @staticmethod
     def get_user_teammates(user_id: str, ignore_groups: list[str]) -> dict[str, User]:
-        """Retrieve all teammates of a given Jira user by their account ID.
-
-        This method gathers all users who share at least one group
-        with the specified user, excluding groups listed in `ignore_groups`.
+        """Retrieve all teammates of a user based on shared Jira Cloud groups.
 
         Args:
-            user_id (str): The Jira account ID of the user whose teammates should be retrieved.
-            ignore_groups (list[str]): List of group names to exclude from the search.
+            user_id (str): The Jira account ID to search teammates for.
+            ignore_groups (list[str]): List of group names to skip.
 
         Returns:
-            dict[str, User]: A dictionary mapping display names to `User` objects
-                representing the teammates of the given user.
+            dict[str, User]: Mapping of display name → User objects for teammates.
         """
         users = {}
         user_account = JiraCloud.get_user_by_account_id(user_id)
@@ -67,14 +68,13 @@ class Atlassian(ConfiguredLogger):
 
     @staticmethod
     def get_group_accounts(group_id: str) -> dict[str, User]:
-        """Retrieve all user accounts belonging to a specific Jira group.
+        """Retrieve all users belonging to a specific Jira group.
 
         Args:
-            group_id (str): The unique identifier of the Jira group.
+            group_id (str): Unique group identifier.
 
         Returns:
-            dict[str, User]: A dictionary mapping display names to `User` objects
-                representing all members of the specified group.
+            dict[str, User]: Mapping of display name → User objects.
         """
         users = {}
         group_members = JiraCloud.get_users_from_group_id(group_id)
@@ -84,20 +84,22 @@ class Atlassian(ConfiguredLogger):
 
     @staticmethod
     def update_or_create_confluence_page(space_key: str, parent_title: str, title: str, body: str, representation: str) -> CreatePage200Response:
-        """Create or update a Confluence page in the specified space.
+        """Create or update a page in a Confluence space.
 
-        If the page does not exist, it is created under the provided parent page.
-        If the page already exists, its content is updated to the new body and title.
+        If a page with the given title does not exist, it is created under
+        the specified parent page. If it exists, the method updates its
+        title, body and version.
 
         Args:
-            space_key (str): The key of the Confluence space where the page resides.
-            parent_title (str): The title of the parent page to attach a new page under if creation is needed.
-            title (str): The title of the page to update or create.
-            body (str): The Confluence Wiki or Storage formatted content of the page.
-            representation (str): The content representation format (e.g., 'storage' or 'wiki').
+            space_key (str): Confluence space key (e.g., "ENG").
+            parent_title (str): Title of the parent page if creation is needed.
+            title (str): Title of the page to update or create.
+            body (str): Page body content (storage or wiki format).
+            representation (str): Content representation type (e.g., "storage").
 
         Returns:
-            None: The function logs progress and errors internally via `ConfiguredLogger`.
+            CreatePage200Response | None: Response of page update/creation,
+            or None if an error occurred.
         """
         a = Atlassian()
 
@@ -127,20 +129,20 @@ class Atlassian(ConfiguredLogger):
 
     @staticmethod
     def snapshot_date_confluence_page(space_key: str, page_title: str, add_time: bool = False) -> CreatePage200Response:
-        """Create a snapshot (version copy) of an existing Confluence page.
+        """Create a date-based snapshot of an existing Confluence page.
 
-        This method duplicates a given Confluence page under the same parent,
-        using the current date (and optionally time) in the title to distinguish it.
-        Useful for versioned backups of periodic reports or dashboards.
+        The snapshot title will be:
+            "<page_title> YYYY-MM-DD"
+        and optionally:
+            "<page_title> YYYY-MM-DD-HH-MM"
 
         Args:
-            space_key (str): The key of the Confluence space containing the page.
-            page_title (str): The title of the page to snapshot.
-            add_time (bool, optional): Whether to append the current time (HH-MM)
-                to the snapshot title. Defaults to False.
+            space_key (str): Confluence space key.
+            page_title (str): Title of the page to snapshot.
+            add_time (bool): Whether to append hour/minute to the snapshot name.
 
         Returns:
-            None: The function logs progress and errors internally via `ConfiguredLogger`.
+            CreatePage200Response | None: Snapshot creation response, or None.
         """
         today = datetime.today()
         snap_title = f"{page_title} {today.year:04d}-{today.month:02d}-{today.day:02d}"
@@ -181,19 +183,14 @@ class Atlassian(ConfiguredLogger):
 
     @staticmethod
     def get_team_members(org_id: str, team_name: str) -> dict[str, User]:
-        """Retrieve all members of a specific team in Jira.
-
-        Given an organization ID and a team name, this method finds the
-        matching team and returns a dictionary mapping display names to
-        `User` objects for all its members.
+        """Retrieve all members belonging to a Jira Team inside an organization.
 
         Args:
-            org_id (str): The organization identifier under which the team is defined.
-            team_name (str): The display name of the team for which members are requested.
+            org_id (str): Organization identifier.
+            team_name (str): Display name of the team.
 
         Returns:
-            dict[str, User]: A dictionary mapping display names to `User` objects
-                representing all members of the specified team.
+            dict[str, User]: Mapping of display name → User objects for team members.
         """
         all_teams = JiraTeams.get_teams(org_id)
 
