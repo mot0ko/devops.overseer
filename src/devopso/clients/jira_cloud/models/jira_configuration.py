@@ -24,7 +24,7 @@ from devopso.clients.jira_cloud.models.time_tracking_configuration import TimeTr
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Configuration(BaseModel):
+class JiraConfiguration(BaseModel):
     """
     Details about the configuration of Jira.
     """ # noqa: E501
@@ -56,7 +56,7 @@ class Configuration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Configuration from a JSON string"""
+        """Create an instance of JiraConfiguration from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -100,7 +100,7 @@ class Configuration(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Configuration from a dict"""
+        """Create an instance of JiraConfiguration from a dict"""
         if obj is None:
             return None
 

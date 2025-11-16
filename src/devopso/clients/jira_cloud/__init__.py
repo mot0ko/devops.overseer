@@ -215,7 +215,6 @@ __all__ = [
     "ConditionGroupConfiguration",
     "ConditionGroupPayload",
     "ConditionGroupUpdate",
-    "Configuration",
     "ConfigurationsListParameters",
     "ConnectCustomFieldValue",
     "ConnectCustomFieldValues",
@@ -501,6 +500,7 @@ __all__ = [
     "JiraColorField",
     "JiraColorInput",
     "JiraComponentField",
+    "JiraConfiguration",
     "JiraDateField",
     "JiraDateInput",
     "JiraDateTimeField",
@@ -1222,7 +1222,6 @@ from devopso.clients.jira_cloud.models.compound_clause import CompoundClause as 
 from devopso.clients.jira_cloud.models.condition_group_configuration import ConditionGroupConfiguration as ConditionGroupConfiguration
 from devopso.clients.jira_cloud.models.condition_group_payload import ConditionGroupPayload as ConditionGroupPayload
 from devopso.clients.jira_cloud.models.condition_group_update import ConditionGroupUpdate as ConditionGroupUpdate
-# from devopso.clients.jira_cloud.models.configuration import Configuration as Configuration
 from devopso.clients.jira_cloud.models.configurations_list_parameters import ConfigurationsListParameters as ConfigurationsListParameters
 from devopso.clients.jira_cloud.models.connect_custom_field_value import ConnectCustomFieldValue as ConnectCustomFieldValue
 from devopso.clients.jira_cloud.models.connect_custom_field_values import ConnectCustomFieldValues as ConnectCustomFieldValues
@@ -1508,6 +1507,7 @@ from devopso.clients.jira_cloud.models.jira_cascading_select_field import JiraCa
 from devopso.clients.jira_cloud.models.jira_color_field import JiraColorField as JiraColorField
 from devopso.clients.jira_cloud.models.jira_color_input import JiraColorInput as JiraColorInput
 from devopso.clients.jira_cloud.models.jira_component_field import JiraComponentField as JiraComponentField
+from devopso.clients.jira_cloud.models.jira_configuration import JiraConfiguration as JiraConfiguration
 from devopso.clients.jira_cloud.models.jira_date_field import JiraDateField as JiraDateField
 from devopso.clients.jira_cloud.models.jira_date_input import JiraDateInput as JiraDateInput
 from devopso.clients.jira_cloud.models.jira_date_time_field import JiraDateTimeField as JiraDateTimeField

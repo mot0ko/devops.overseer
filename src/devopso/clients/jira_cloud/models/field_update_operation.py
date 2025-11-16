@@ -28,11 +28,11 @@ class FieldUpdateOperation(BaseModel):
     Details of an operation to perform on a field.
     """ # noqa: E501
     add: Optional[Any] = Field(default=None, description="The value to add to the field.")
-    copy: Optional[Any] = Field(default=None, description="The field value to copy from another issue.")
+    fieldcopy: Optional[Any] = Field(default=None, description="The field value to copy from another issue.")
     edit: Optional[Any] = Field(default=None, description="The value to edit in the field.")
     remove: Optional[Any] = Field(default=None, description="The value to removed from the field.")
     set: Optional[Any] = Field(default=None, description="The value to set in the field.")
-    __properties: ClassVar[List[str]] = ["add", "copy", "edit", "remove", "set"]
+    __properties: ClassVar[List[str]] = ["add", "fieldcopy", "edit", "remove", "set"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,10 +78,10 @@ class FieldUpdateOperation(BaseModel):
         if self.add is None and "add" in self.model_fields_set:
             _dict['add'] = None
 
-        # set to None if copy (nullable) is None
+        # set to None if fieldcopy (nullable) is None
         # and model_fields_set contains the field
-        if self.copy is None and "copy" in self.model_fields_set:
-            _dict['copy'] = None
+        if self.fieldcopy is None and "fieldcopy" in self.model_fields_set:
+            _dict['fieldcopy'] = None
 
         # set to None if edit (nullable) is None
         # and model_fields_set contains the field
@@ -111,7 +111,7 @@ class FieldUpdateOperation(BaseModel):
 
         _obj = cls.model_validate({
             "add": obj.get("add"),
-            "copy": obj.get("copy"),
+            "fieldcopy": obj.get("fieldcopy"),
             "edit": obj.get("edit"),
             "remove": obj.get("remove"),
             "set": obj.get("set")

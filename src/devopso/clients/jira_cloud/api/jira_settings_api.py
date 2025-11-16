@@ -21,7 +21,7 @@ from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from devopso.clients.jira_cloud.models.application_property import ApplicationProperty
-from devopso.clients.jira_cloud.models.configuration import Configuration
+from devopso.clients.jira_cloud.models.jira_configuration import JiraConfiguration
 from devopso.clients.jira_cloud.models.simple_application_property_bean import SimpleApplicationPropertyBean
 
 from devopso.clients.jira_cloud.api_client import ApiClient, RequestSerialized
@@ -614,7 +614,7 @@ class JiraSettingsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Configuration:
+    ) -> JiraConfiguration:
         """Get global settings
 
         Returns the [global settings](https://confluence.atlassian.com/x/qYXKM) in Jira. These settings determine whether optional features (for example, subtasks, time tracking, and others) are enabled. If time tracking is enabled, this operation also returns the time tracking configuration.  **[Permissions](#permissions) required:** Permission to access Jira.
@@ -649,7 +649,7 @@ class JiraSettingsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Configuration",
+            '200': "JiraConfiguration",
             '401': None,
         }
         response_data = self.api_client.call_api(
@@ -678,7 +678,7 @@ class JiraSettingsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Configuration]:
+    ) -> ApiResponse[JiraConfiguration]:
         """Get global settings
 
         Returns the [global settings](https://confluence.atlassian.com/x/qYXKM) in Jira. These settings determine whether optional features (for example, subtasks, time tracking, and others) are enabled. If time tracking is enabled, this operation also returns the time tracking configuration.  **[Permissions](#permissions) required:** Permission to access Jira.
@@ -713,7 +713,7 @@ class JiraSettingsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Configuration",
+            '200': "JiraConfiguration",
             '401': None,
         }
         response_data = self.api_client.call_api(
@@ -777,7 +777,7 @@ class JiraSettingsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Configuration",
+            '200': "JiraConfiguration",
             '401': None,
         }
         response_data = self.api_client.call_api(

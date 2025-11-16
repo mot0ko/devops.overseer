@@ -104,7 +104,6 @@ from devopso.clients.jira_cloud.models.compound_clause import CompoundClause
 from devopso.clients.jira_cloud.models.condition_group_configuration import ConditionGroupConfiguration
 from devopso.clients.jira_cloud.models.condition_group_payload import ConditionGroupPayload
 from devopso.clients.jira_cloud.models.condition_group_update import ConditionGroupUpdate
-from devopso.clients.jira_cloud.models.configuration import Configuration
 from devopso.clients.jira_cloud.models.configurations_list_parameters import ConfigurationsListParameters
 from devopso.clients.jira_cloud.models.connect_custom_field_value import ConnectCustomFieldValue
 from devopso.clients.jira_cloud.models.connect_custom_field_values import ConnectCustomFieldValues
@@ -390,6 +389,7 @@ from devopso.clients.jira_cloud.models.jira_cascading_select_field import JiraCa
 from devopso.clients.jira_cloud.models.jira_color_field import JiraColorField
 from devopso.clients.jira_cloud.models.jira_color_input import JiraColorInput
 from devopso.clients.jira_cloud.models.jira_component_field import JiraComponentField
+from devopso.clients.jira_cloud.models.jira_configuration import JiraConfiguration
 from devopso.clients.jira_cloud.models.jira_date_field import JiraDateField
 from devopso.clients.jira_cloud.models.jira_date_input import JiraDateInput
 from devopso.clients.jira_cloud.models.jira_date_time_field import JiraDateTimeField
